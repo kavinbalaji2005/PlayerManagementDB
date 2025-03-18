@@ -1,0 +1,10 @@
+/* Center the spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Add spacing between cards */
+.card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
