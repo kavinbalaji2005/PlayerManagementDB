@@ -11,7 +11,7 @@ import Login from "./components/Login";
 
 // Function to check if the user is authenticated
 const isAuthenticated = () => {
-  return !!localStorage.getItem("token");
+  return !!localStorage.getItem("role");
 };
 
 // Function to load a specific component into the main content area

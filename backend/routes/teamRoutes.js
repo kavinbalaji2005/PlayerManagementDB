@@ -1,11 +1,10 @@
 const express = require("express");
-const { authenticateUser, authorizeRole } = require("../middleware/authMiddleware");
 const { Team } = require("../models");
 
 const router = express.Router();
 
 // Create a new team (Admin only)
-router.post("/", authenticateUser, authorizeRole(["Admin"]), async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const team = await Team.create(req.body);
         res.status(201).json(team);
@@ -15,7 +14,7 @@ router.post("/", authenticateUser, authorizeRole(["Admin"]), async (req, res) =>
 });
 
 // Get all teams (Everyone)
-router.get("/", authenticateUser, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const teams = await Team.findAll();
         res.json(teams);
@@ -25,7 +24,7 @@ router.get("/", authenticateUser, async (req, res) => {
 });
 
 // Update team (Admin only)
-router.put("/:id", authenticateUser, authorizeRole(["Admin"]), async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const updated = await Team.update(req.body, { where: { TeamID: req.params.id } });
         res.json({ message: "Team updated successfully" });
@@ -35,7 +34,7 @@ router.put("/:id", authenticateUser, authorizeRole(["Admin"]), async (req, res) 
 });
 
 // Delete team (Admin only)
-router.delete("/:id", authenticateUser, authorizeRole(["Admin"]), async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         await Team.destroy({ where: { TeamID: req.params.id } });
         res.json({ message: "Team deleted successfully" });

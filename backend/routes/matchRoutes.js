@@ -1,11 +1,10 @@
 const express = require("express");
-const { authenticateUser, authorizeRole } = require("../middleware/authMiddleware");
 const { Match } = require("../models");
 
 const router = express.Router();
 
 // Create a match (Admin only)
-router.post("/", authenticateUser, authorizeRole(["Admin"]), async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const match = await Match.create(req.body);
         res.status(201).json(match);
@@ -15,7 +14,7 @@ router.post("/", authenticateUser, authorizeRole(["Admin"]), async (req, res) =>
 });
 
 // Get all matches (Everyone)
-router.get("/", authenticateUser, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const matches = await Match.findAll();
         res.json(matches);

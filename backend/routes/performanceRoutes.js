@@ -1,11 +1,10 @@
 const express = require("express");
-const { authenticateUser, authorizeRole } = require("../middleware/authMiddleware");
 const { BattingPerformance, BowlingPerformance, FieldingPerformance } = require("../models");
 
 const router = express.Router();
 
 // Get all performance records (Everyone)
-router.get("/", authenticateUser, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const batting = await BattingPerformance.findAll();
         const bowling = await BowlingPerformance.findAll();
@@ -17,7 +16,7 @@ router.get("/", authenticateUser, async (req, res) => {
 });
 
 // Update performance (Admin, Coach)
-router.put("/:id", authenticateUser, authorizeRole(["Admin", "Coach"]), async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         // Check which performance type needs updating
         const { type } = req.body;

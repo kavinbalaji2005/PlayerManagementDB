@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { authenticateUser, authorizeRole } = require("../middleware/authMiddleware");
 const { User } = require("../models");
 
 // Create a user (Admin only)
-router.post("/", authenticateUser, authorizeRole("Admin"), async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const user = await User.create(req.body);
         res.status(201).json(user);
@@ -14,7 +13,7 @@ router.post("/", authenticateUser, authorizeRole("Admin"), async (req, res) => {
 });
 
 // Get all users (Admin only)
-router.get("/", authenticateUser, authorizeRole("Admin"), async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const users = await User.findAll();
         res.status(200).json(users);
@@ -24,14 +23,10 @@ router.get("/", authenticateUser, authorizeRole("Admin"), async (req, res) => {
 });
 
 // Get a single user (Admins can access all, others can only access themselves)
-router.get("/:id", authenticateUser, async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
         if (!user) return res.status(404).json({ error: "User not found" });
-
-        if (req.user.role !== "Admin" && req.user.id !== user.id) {
-            return res.status(403).json({ error: "Access denied" });
-        }
 
         res.status(200).json(user);
     } catch (error) {
@@ -40,7 +35,7 @@ router.get("/:id", authenticateUser, async (req, res) => {
 });
 
 // Update a user (Admin only)
-router.put("/:id", authenticateUser, authorizeRole("Admin"), async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
         if (!user) return res.status(404).json({ error: "User not found" });
@@ -53,7 +48,7 @@ router.put("/:id", authenticateUser, authorizeRole("Admin"), async (req, res) =>
 });
 
 // Delete a user (Admin only)
-router.delete("/:id", authenticateUser, authorizeRole("Admin"), async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
         if (!user) return res.status(404).json({ error: "User not found" });

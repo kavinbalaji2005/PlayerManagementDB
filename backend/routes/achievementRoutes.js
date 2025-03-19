@@ -1,11 +1,10 @@
 const express = require("express");
-const { authenticateUser, authorizeRole } = require("../middleware/authMiddleware");
 const { Achievements } = require("../models");
 
 const router = express.Router();
 
 // Add an achievement (Admin only)
-router.post("/", authenticateUser, authorizeRole(["Admin"]), async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const achievement = await Achievements.create(req.body);
         res.status(201).json(achievement);
@@ -15,7 +14,7 @@ router.post("/", authenticateUser, authorizeRole(["Admin"]), async (req, res) =>
 });
 
 // Get all achievements (Everyone)
-router.get("/", authenticateUser, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const achievements = await Achievements.findAll();
         res.json(achievements);

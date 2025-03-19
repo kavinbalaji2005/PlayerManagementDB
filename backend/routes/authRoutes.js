@@ -1,7 +1,5 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const { User } = require("../models");
-require("dotenv").config();
 
 const router = express.Router();
 
@@ -23,11 +21,8 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid username or password" });
     }
 
-    // Generate JWT with userID and role
-    const token = jwt.sign({ userID: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
-
     console.log("Login successful:", { userID: user.id, role: user.role });
-    res.status(200).json({ message: `Logged in as ${user.role}`, token, role: user.role });
+    res.status(200).json({ message: `Logged in as ${user.role}`, role: user.role });
   } catch (error) {
     console.error("Server error:", error);
     res.status(500).json({ error: "Server error" });
