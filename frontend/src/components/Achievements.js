@@ -1,5 +1,5 @@
+import API from "../services/api";
 
-import axios from 'axios';
 
 export default async function Achievements() {
   // Show spinner while loading
@@ -11,7 +11,7 @@ export default async function Achievements() {
     </div>
   `;
  
-  const achievements = await axios.get("http://localhost:5000/api/achievements").then((res) => res.data);
+  const achievements = await API.get("http://localhost:5000/api/achievements").then((res) => res.data);
 
   // Render achievements after loading
   return `
@@ -87,7 +87,7 @@ window.showAddAchievementModal = () => {
       Award: document.getElementById("award").value,
       Date: document.getElementById("date").value,
     };
-    await axios.post("/achievements", newAchievement);
+    await API.post("/achievements", newAchievement);
     modal.hide();
     window.loadAchievements();
   };

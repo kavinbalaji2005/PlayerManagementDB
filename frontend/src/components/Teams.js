@@ -1,45 +1,45 @@
 import API from "../services/api";
 
 export default async function Teams() {
-  // Show spinner while loading
-  document.getElementById("main-content").innerHTML = `
-    <div class="text-center mt-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  `;
+  try {
+    const teams = await API.get("/teams").then((res) => res.data);
 
-  const teams = await API.get("/teams").then((res) => res.data);
-
-  // Render teams after loading
-  return `
-    <div>
-      <h2>Teams</h2>
-      <button class="btn btn-success mb-3" onclick="showAddTeamModal()">Add Team</button>
-      <div class="row">
-        ${teams
-          .map(
-            (team) => `
-          <div class="col-md-4">
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title">${team.TeamName}</h5>
-                <p class="card-text">
-                  <strong>Coach:</strong> ${team.Coach}<br>
-                  <strong>Captain ID:</strong> ${team.CaptainID || "N/A"}
-                </p>
-                <button class="btn btn-primary btn-sm" onclick="editTeam(${team.TeamID})">Edit</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteTeam(${team.TeamID})">Delete</button>
+    // Render teams after loading
+    return `
+      <div>
+        <h2>Teams</h2>
+        <button class="btn btn-success mb-3" onclick="showAddTeamModal()">Add Team</button>
+        <div class="row">
+          ${teams
+            .map(
+              (team) => `
+            <div class="col-md-4">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">${team.TeamName}</h5>
+                  <p class="card-text">
+                    <strong>Coach:</strong> ${team.Coach}<br>
+                    <strong>Captain:</strong> ${team.Captain ? team.Captain.Name : "N/A"}<br>
+                  </p>
+                  <button class="btn btn-primary btn-sm" onclick="editTeam(${team.TeamID})">Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteTeam(${team.TeamID})">Delete</button>
+                </div>
               </div>
             </div>
-          </div>
-        `
-          )
-          .join("")}
+          `
+            )
+            .join("")}
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  } catch (error) {
+    console.error("Error fetching teams:", error);
+    return `
+      <div class="text-center mt-5">
+        <p class="text-danger">Failed to load teams. Please try again later.</p>
+      </div>
+    `;
+  }
 }
 
 // Show Add Team Modal
@@ -141,4 +141,4 @@ window.deleteTeam = async (teamID) => {
     await API.delete(`/teams/${teamID}`);
     window.loadTeams();
   }
-}; 
+};

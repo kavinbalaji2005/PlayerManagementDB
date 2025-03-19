@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Team.associate = (models) => {
     Team.hasMany(models.Player, { foreignKey: "TeamID" });
+    Team.belongsTo(models.Player, { as: "Captain", foreignKey: "CaptainID" }); // Add this association
   };
 
   return Team;

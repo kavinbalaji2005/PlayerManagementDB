@@ -1,3 +1,4 @@
+// filepath: d:\Projects\Player Management System\backend\models\player.js
 module.exports = (sequelize, DataTypes) => {
   const Player = sequelize.define("Player", {
     PlayerID: { 
@@ -12,12 +13,11 @@ module.exports = (sequelize, DataTypes) => {
     TotalMatches: DataTypes.INTEGER,
     Wins: DataTypes.INTEGER,
     Losses: DataTypes.INTEGER,
-    Status: DataTypes.ENUM("Active", "Available")
+    // Removed Status column
   },
   {
     timestamps: false // Disable timestamps
-  }
-);
+  });
 
   Player.associate = (models) => {
     Player.belongsTo(models.Team, { foreignKey: "TeamID" });

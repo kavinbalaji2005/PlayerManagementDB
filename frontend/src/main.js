@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/main.css";
-import Navbar from "./components/Navbar";
+import Navbar, { setupNavbarEventListeners } from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import Players from "./components/Players";
 import Teams from "./components/Teams";
@@ -11,7 +11,7 @@ import Login from "./components/Login";
 
 // Function to check if the user is authenticated
 const isAuthenticated = () => {
-  return !!localStorage.getItem("role");
+  return !!localStorage.getItem("username");
 };
 
 // Function to load a specific component into the main content area
@@ -49,7 +49,8 @@ const renderApp = async () => {
         </div>
       </div>
     `;
-    await loadComponent(Dashboard);
+    setupNavbarEventListeners(); // Attach event listeners after rendering the Navbar
+    await loadComponent(Dashboard); // Load the default component (Dashboard)
   } else {
     document.getElementById("app").innerHTML = Login();
   }

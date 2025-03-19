@@ -4,11 +4,7 @@ import API from "./api";
 export const login = async (username, password) => {
   try {
     const response = await API.post("/auth/login", { username, password });
-    const { role } = response.data;
-
-    // Save the role to localStorage
-    localStorage.setItem("role", role);
-
+    localStorage.setItem("username", username); // Save username to localStorage
     return response.data;
   } catch (error) {
     console.error("Error during login:", error.response?.data || error.message);
@@ -16,7 +12,7 @@ export const login = async (username, password) => {
   }
 };
 
-// Logout by clearing the role
+// Logout by clearing localStorage
 export const logout = () => {
-  localStorage.removeItem("role");
+  localStorage.clear();
 };

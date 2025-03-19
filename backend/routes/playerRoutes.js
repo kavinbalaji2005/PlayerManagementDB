@@ -3,44 +3,44 @@ const { Player } = require("../models");
 
 const router = express.Router();
 
-// Create a player (Admin, Coach)
+// Create a player
 router.post("/", async (req, res) => {
-    try {
-        const player = await Player.create(req.body);
-        res.status(201).json(player);
-    } catch (error) {
-        res.status(500).json({ error: "Error creating player" });
-    }
+  try {
+    const player = await Player.create(req.body);
+    res.status(201).json(player);
+  } catch (error) {
+    res.status(500).json({ error: "Error creating player" });
+  }
 });
 
-// Get all players (Everyone)
+// Get all players
 router.get("/", async (req, res) => {
-    try {
-        const players = await Player.findAll();
-        res.json(players);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching players" });
-    }
+  try {
+    const players = await Player.findAll();
+    res.json(players);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching players" });
+  }
 });
 
-// Update player (Admin, Coach)
+// Update player
 router.put("/:id", async (req, res) => {
-    try {
-        const updated = await Player.update(req.body, { where: { PlayerID: req.params.id } });
-        res.json({ message: "Player updated successfully" });
-    } catch (error) {
-        res.status(500).json({ error: "Error updating player" });
-    }
+  try {
+    const updated = await Player.update(req.body, { where: { PlayerID: req.params.id } });
+    res.json({ message: "Player updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error updating player" });
+  }
 });
 
-// Delete player (Admin only)
+// Delete player
 router.delete("/:id", async (req, res) => {
-    try {
-        await Player.destroy({ where: { PlayerID: req.params.id } });
-        res.json({ message: "Player deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ error: "Error deleting player" });
-    }
+  try {
+    await Player.destroy({ where: { PlayerID: req.params.id } });
+    res.json({ message: "Player deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error deleting player" });
+  }
 });
 
 module.exports = router;

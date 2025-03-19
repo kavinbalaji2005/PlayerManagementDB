@@ -20,7 +20,6 @@ export default async function Players() {
                   <p class="card-text">
                     <strong>Age:</strong> ${player.Age}<br>
                     <strong>Role:</strong> ${player.Role}<br>
-                    <strong>Status:</strong> ${player.Status}
                   </p>
                   <button class="btn btn-primary btn-sm" onclick="editPlayer(${player.PlayerID})">Edit</button>
                   <button class="btn btn-danger btn-sm" onclick="deletePlayer(${player.PlayerID})">Delete</button>
@@ -149,7 +148,13 @@ window.editPlayer = async (playerID) => {
 // Delete Player
 window.deletePlayer = async (playerID) => {
   if (confirm("Are you sure you want to delete this player?")) {
-    await API.delete(`/players/${playerID}`);
-    window.loadPlayers();
+    try {
+      await API.delete(`/players/${playerID}`);
+      alert("Player deleted successfully!");
+      window.loadPlayers(); // Reload players
+    } catch (error) {
+      console.error("Error deleting player:", error);
+      alert(error.response?.data?.error || "Failed to delete player. Please try again.");
+    }
   }
 };
