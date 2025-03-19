@@ -16,7 +16,7 @@ export default function Login() {
           </div>
           <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
-      </div>
+      </div> 
     </div>
   `;
 }
