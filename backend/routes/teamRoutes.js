@@ -43,6 +43,7 @@ router.delete("/:id", async (req, res) => {
     await Team.destroy({ where: { TeamID: req.params.id } });
     res.json({ message: "Team deleted successfully" });
   } catch (error) {
+    console.error("Error deleting team:", error); // Log the error
     res.status(500).json({ error: "Error deleting team" });
   }
 });
